@@ -7,6 +7,7 @@ import Login from '../screens/Login';
 import Home from '../screens/Home';
 import SignUp from '../screens/SignUp';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Splash from '../screens/Splash';
 
 
 // const Tab = createBottomTabNavigator();
@@ -20,6 +21,7 @@ function AppNavigation() {
         <>
             <NavigationContainer>
                 <Tab.Navigator>
+                    <Tab.Screen name="Splash" component={Splash} />
                     <Tab.Screen name="Home" component={Home} />
                     <Tab.Screen name="Login" component={Login} />
                     <Tab.Screen name="SignUp" component={SignUp} />
