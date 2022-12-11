@@ -1,13 +1,24 @@
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
-// import auth from '@react-native-firebase/auth';
 import styles from '../styling';
 import SMTextField from '../component/SMTextInput';
 import SMButton from '../component/SMButton';
+import auth from '@react-native-firebase/auth';
+
 // import database from '@react-native-firebase/database';
 
 function SignUp({navigation}) {
   const [model, setModel] = useState({});
+
+  let signupuser = () => {
+    auth().createUserWithEmailAndPassword('abc@gmail.com', '123456')
+    .then(res => {
+      console.log(res)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
 
   return (
     <>
@@ -32,7 +43,7 @@ function SignUp({navigation}) {
           />
         </View>
         <View style={[styles.p2, styles.w100]}>
-          <SMButton label="Sign Up" />
+          <SMButton onPress={signupuser} label="Sign Up" />
         </View>
       </View>
     </>
