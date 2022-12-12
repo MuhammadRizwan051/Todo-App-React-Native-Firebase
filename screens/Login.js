@@ -23,27 +23,29 @@ function Login({ navigation }) {
 
   return (
     <>
-      <View style={[styles.bgLight, styles.h100, styles.flexCenter]}>
-        <Text style={[styles.textPrimary, styles.fs2]}>LOGIN</Text>
+      <View style={[styles.h100, { backgroundColor: '#B2B2B2', alignItems: 'center', paddingTop: '30%' }]}>
+        <Text style={[styles.fs2, { color: 'black', fontWeight: 'bold', fontSize: 26 }]}>LOGIN</Text>
         <Icon name='person' size={80} color='black' />
-        <View style={[styles.p2, styles.w100]}>
+        <View style={[styles.w100, { paddingTop: 25, paddingHorizontal: 20 }]}>
           <SMTextField label="Email" labelColor='grey' placeholderTextColor='black' onChangeText={e => setModel({ ...model, email: e })} />
         </View>
-        <View style={[styles.p2, styles.w100]}>
+        <View style={[styles.w100, { paddingTop: 25, paddingHorizontal: 20 }]}>
           <SMTextField label="Password" labelColor='grey' placeholderTextColor='black' onChangeText={e => setModel({ ...model, password: e })} />
         </View>
-        <View style={[styles.p2, styles.w100]}>
-          <SMButton onPress={loginuser} label="Login" />
+        <View style={[styles.p2, styles.w100, { paddingTop: 50 }]}>
+          <TouchableOpacity style={{ backgroundColor: '#2B3A55', paddingVertical: 10, borderRadius: 15 }} onPress={loginuser}>
+            <Text style={{ textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 20 }}>LOGIN</Text>
+          </TouchableOpacity>
         </View>
         <View style={[styles.w100, { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }]}>
-          <Text style={{fontSize:16}}>
+          <Text style={{ fontSize: 16 }}>
             Need an account? </Text>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate('SignUp');
             }}
           >
-            <Text style={[styles.textCenter, styles.textPrimary, {fontWeight:'bold'}]}>
+            <Text style={[styles.textCenter, styles.textPrimary, { fontWeight: 'bold' }]}>
               SIGN UP
             </Text>
           </TouchableOpacity>

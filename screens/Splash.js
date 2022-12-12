@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import styles from '../styling';
 
 function Splash({ navigation }) {
+
+  useEffect(() => {
+    setTimeout(() => {
+      navigation.navigate('Login')
+    }, 3000)
+  })
+
   return (
     <>
       <View style={[styles.bgLight, styles.h100, styles.flexCenter]}>
@@ -18,7 +25,6 @@ function Splash({ navigation }) {
             Firebase App with complete Authentication and realtime database.
           </Text>
         </View>
-        {/* <View> */}
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('Login')
@@ -26,7 +32,6 @@ function Splash({ navigation }) {
           style={styles.btn}>
           <Text style={[styles.textWhite, styles.fs3]}>Get Started</Text>
         </TouchableOpacity>
-        {/* </View> */}
       </View>
     </>
   );
