@@ -12,8 +12,8 @@ function Login({ navigation }) {
   let loginuser = () => {
     auth().signInWithEmailAndPassword(model.email, model.password)
       .then(res => {
-        console.log(res)
-        navigation.navigate('Home', res.user)
+        // console.log(res)
+        navigation.navigate('Todo', res.user.uid)
       })
       .catch(err => {
         console.log(err)

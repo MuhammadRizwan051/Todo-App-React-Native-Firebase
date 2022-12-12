@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Button, Image, TouchableHighlight, ImageBackground } from "react-native";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Button, Image, TouchableHighlight, ImageBackground, ScrollView } from "react-native";
 import addImage from '../assets/addIcon.png'
 import editImage from '../assets/editIcon.png'
 import deleteImage from '../assets/deleteIcon.png'
 import backgroundImage from '../assets/backgroundImage.jpg'
+import database from '@react-native-firebase/database'
 
-function Todo() {
+function Todo({ navigation, route }) {
+    let uid = route.params
     let [txt, setTxt] = useState('')
     let [list, setList] = useState([])
     let [indexNum, setIndexNum] = useState()
@@ -55,6 +57,19 @@ function Todo() {
         setList([...list])
     }
 
+    let saveData = () => {
+        console.log(route.params)
+        database()
+            .ref(`appUsers/${route.params}/todoData`)
+            .set(list)
+            .then((res) => {
+                console.log(res)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
 
     // let check = () => {
     //   if (txt.length >= 1) {
@@ -86,25 +101,30 @@ function Todo() {
                     }
                     {list && list.length > 0 ? <Text style={styles.countOrNoCount}>{`Total: ${list.length}`}</Text> : <Text style={styles.countOrNoCount}>No Todos to Display</Text>}
 
-                    {list && list.map((e, i) => <View key={i} style={styles.todoListView}>
-                        <Text style={styles.todoText}>{e.text}</Text>
+                    <ScrollView>
+                        {list && list.map((e, i) => (
+                            <>
+                                <View key={i} style={[styles.todoListView]}>
+                                    <Text style={styles.todoText}>{e.text}</Text>
 
+                                    <TouchableOpacity onPress={() => edit(e, i)} style={{ width: '10%' }} >
+                                        <Image source={editImage} style={styles.editAndDelete} />
+                                    </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => edit(e, i)} style={{ width: '10%' }} >
-                            <Image source={editImage} style={styles.editAndDelete} />
+                                    <TouchableOpacity onPress={() => del(e, i)} style={{ width: '10%' }} >
+                                        <Image source={deleteImage} style={styles.editAndDelete} />
+                                    </TouchableOpacity>
+                                </View>
+                            </>)
+                        )}
+                    </ScrollView>
+                    {list.length > 0 ?
+                        <TouchableOpacity onPress={saveData} style={{ backgroundColor: 'red', position: 'absolute', bottom: 0, left: 0, right: 0, marginHorizontal: 20, paddingVertical: 10, borderRadius: 50 }}>
+                            <Text style={{ color: 'white', textAlign: 'center' }}>Save Data</Text>
                         </TouchableOpacity>
-
-                        <TouchableOpacity onPress={() => del(e, i)} style={{ width: '10%' }} >
-                            <Image source={deleteImage} style={styles.editAndDelete} />
-                        </TouchableOpacity>
-                        {/* <View style={{display:'inline-block'}}>
-              <Text style={[styles.todoText, { width: '100%' }]}>{e.time}</Text>
-            </View> */}
-                    </View>
-                    )}
-                    <TouchableOpacity style={{ backgroundColor: 'red', position: 'absolute', bottom: 0, left: 0, right: 0, marginHorizontal:20, paddingVertical:10, borderRadius:50 }}>
-                        <Text style={{ color: 'white', textAlign:'center' }}>Save Data</Text>
-                    </TouchableOpacity>
+                        :
+                        ""
+                    }
                 </View>
 
             </ImageBackground>
