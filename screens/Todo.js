@@ -64,9 +64,11 @@ function Todo({ navigation, route }) {
             .set(list)
             .then((res) => {
                 console.log(res)
+                setList([])
             })
             .catch((err) => {
                 console.log(err)
+                setList([])
             })
     }
 
@@ -83,10 +85,10 @@ function Todo({ navigation, route }) {
 
     return (
         <>
-            <ImageBackground source={backgroundImage} >
+            <ImageBackground source={{ uri: 'https://wallpaper.dog/large/9568.jpg' }} >
                 <View style={styles.container}>
                     <Text style={styles.heading}>Todo App</Text>
-                    <View style={{ flexDirection: 'row', marginVertical: 35, }}>
+                    <View style={{ flexDirection: 'row', marginVertical: 20, }}>
                         <TextInput value={txt} style={styles.inputField} placeholderTextColor={'white'} placeholder="Enter Text" onChangeText={(e) => setTxt(e)}></TextInput>
                         {/* <TouchableOpacity style={{ backgroundColor: 'crimson' }} ><Text style={{ color: 'white', textAlign: 'center' }}>Update</Text></TouchableOpacity> */}
                         <TouchableOpacity onPress={add} style={[styles.addBtn]} >
@@ -101,7 +103,7 @@ function Todo({ navigation, route }) {
                     }
                     {list && list.length > 0 ? <Text style={styles.countOrNoCount}>{`Total: ${list.length}`}</Text> : <Text style={styles.countOrNoCount}>No Todos to Display</Text>}
 
-                    <ScrollView>
+                    <ScrollView style={{ marginBottom: 60 }}>
                         {list && list.map((e, i) => (
                             <>
                                 <View key={i} style={[styles.todoListView]}>
@@ -119,8 +121,8 @@ function Todo({ navigation, route }) {
                         )}
                     </ScrollView>
                     {list.length > 0 ?
-                        <TouchableOpacity onPress={saveData} style={{ backgroundColor: 'red', position: 'absolute', bottom: 0, left: 0, right: 0, marginHorizontal: 20, paddingVertical: 10, borderRadius: 50 }}>
-                            <Text style={{ color: 'white', textAlign: 'center' }}>Save Data</Text>
+                        <TouchableOpacity onPress={saveData} style={{ backgroundColor: '#06283D', position: 'absolute', bottom: 0, left: 0, right: 0, paddingVertical: 6 }}>
+                            <Text style={{ color: 'white', textAlign: 'center', fontWeight:'bold', fontSize:18 }}>Save Data</Text>
                         </TouchableOpacity>
                         :
                         ""
@@ -142,7 +144,7 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     heading: {
-        backgroundColor: 'royalblue',
+        // backgroundColor: 'royalblue',
         paddingVertical: 8,
         color: 'white',
         fontSize: 26,
@@ -184,7 +186,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         marginBottom: 15,
         padding: 5,
-        marginHorizontal: 10
+        marginHorizontal: 10,
     },
     todoText: {
         width: '80%',

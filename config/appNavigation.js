@@ -28,7 +28,12 @@ function AppNavigation() {
     return (
         <>
             <NavigationContainer>
-                <Tab.Navigator>
+                <Tab.Navigator screenOptions={{
+                    tabBarActiveTintColor: 'black',
+                    tabBarLabelStyle: { fontSize: 16, fontWeight: 'bold' },
+                    tabBarItemStyle: { width: 100 },
+                    tabBarStyle: { backgroundColor: '#B4CDE6', paddingVertical: 20 },
+                }}>
                     {/* <Tab.Screen name="ABC" component={Splash} /> */}
                     <Tab.Screen name="SignUp" component={SignUp} />
                     <Tab.Screen name="Login" component={Login} />
@@ -41,4 +46,3 @@ function AppNavigation() {
 }
 
 export default AppNavigation
-
