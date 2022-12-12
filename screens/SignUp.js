@@ -54,6 +54,18 @@ function SignUp({ navigation }) {
         <View style={[styles.p2, styles.w100]}>
           <SMButton onPress={signupuser} label="Sign Up" />
         </View>
+        <Text style={[styles.textCenter, styles.fs4, styles.flexCenter]}>
+          Already a user?
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('Login');
+            }}
+            style={styles.flexCenter}>
+            <Text style={[styles.textCenter, styles.fs3, styles.textPrimary]}>
+              Login
+            </Text>
+          </TouchableOpacity>
+        </Text>
       </View>
     </>
   );
