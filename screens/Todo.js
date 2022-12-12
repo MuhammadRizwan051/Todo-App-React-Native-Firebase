@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Button, Image, TouchableHighlight, ImageBackground, ScrollView } from "react-native";
+import { View, Text, TextInput, StyleSheet, ActivityIndicator, TouchableOpacity, Button, Image, TouchableHighlight, ImageBackground, ScrollView } from "react-native";
 import addImage from '../assets/addIcon.png'
 import editImage from '../assets/editIcon.png'
 import deleteImage from '../assets/deleteIcon.png'
 import backgroundImage from '../assets/backgroundImage.jpg'
 import database from '@react-native-firebase/database'
 
+
 function Todo({ navigation, route }) {
     let uid = route.params
     let [txt, setTxt] = useState('')
     let [list, setList] = useState([])
     let [indexNum, setIndexNum] = useState()
+    let [saveLoading, setSaveLoading] = useState(false)
 
     let add = () => {
         if (!txt) {
@@ -58,15 +60,18 @@ function Todo({ navigation, route }) {
     }
 
     let saveData = () => {
+        setSaveLoading(true)
         console.log(route.params)
         database()
             .ref(`appUsers/${route.params}/todoData`)
             .set(list)
             .then((res) => {
+                setSaveLoading(false)
                 console.log(res)
                 setList([])
             })
             .catch((err) => {
+                setSaveLoading(false)
                 console.log(err)
                 setList([])
             })
@@ -103,6 +108,10 @@ function Todo({ navigation, route }) {
                     }
                     {list && list.length > 0 ? <Text style={styles.countOrNoCount}>{`Total: ${list.length}`}</Text> : <Text style={styles.countOrNoCount}>No Todos to Display</Text>}
 
+                    {list && list.length < 1 ? <View style={{ marginTop: '50%', width: '100%', height: '100%', alignItems: 'center' }}><TouchableOpacity onPress={() => navigation.navigate('Home')} style={{ backgroundColor: 'crimson', marginTop: 15, borderColor: 'white', paddingVertical: 5, borderWidth: 2, borderRadius: 15, width: '70%' }}>
+                        <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 22, color: 'white' }}>Show Todo Data</Text>
+                    </TouchableOpacity></View> : ''}
+
                     <ScrollView style={{ marginBottom: 60 }}>
                         {list && list.map((e, i) => (
                             <>
@@ -122,7 +131,7 @@ function Todo({ navigation, route }) {
                     </ScrollView>
                     {list.length > 0 ?
                         <TouchableOpacity onPress={saveData} style={{ backgroundColor: '#06283D', position: 'absolute', bottom: 0, left: 0, right: 0, paddingVertical: 6 }}>
-                            <Text style={{ color: 'white', textAlign: 'center', fontWeight:'bold', fontSize:18 }}>Save Data</Text>
+                            <Text style={{ color: 'white', textAlign: 'center', fontWeight: 'bold', fontSize: 18 }}>{saveLoading ? <ActivityIndicator size='large' color="white" /> : 'Save Data'}</Text>
                         </TouchableOpacity>
                         :
                         ""
@@ -144,7 +153,6 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     heading: {
-        // backgroundColor: 'royalblue',
         paddingVertical: 8,
         color: 'white',
         fontSize: 26,

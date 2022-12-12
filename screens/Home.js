@@ -26,9 +26,9 @@ function Home({ navigation, route }) {
       })
   }
 
-  // useEffect(() => {
-  //   getData()
-  // }, [])
+  useEffect(() => {
+    getData()
+  }, [])
 
   let refresh = () => {
     setData()
@@ -37,47 +37,42 @@ function Home({ navigation, route }) {
   return (
     <>
       <ImageBackground source={{ uri: 'https://wallpaper.dog/large/9568.jpg' }}>
-        <View style={{ alignItems: 'center', height: '100%' }}>
+        {data && data.length > 0 ? <Text style={styles.countOrNoCount}>{`Total: ${data.length}`}</Text> : <Text style={styles.countOrNoCount}>No Todos to Display</Text>}
+        <View style={{ height: '100%', width: '100%' }}>
           {isLoading ?
-            <View style={{ justifyContent: 'center', alignItems: 'center', height: '100%' }}><ActivityIndicator size='large' color="white" /></View>
-            :
-            // <View>
-            //   {data && data.map((e, i) => (
-            //     <View key={i} style={{ flexDirection: 'row', justifyContent: 'space-between', borderWidth: 2 }}>
-            //       <Text>{e.text}</Text>
-            //       <Text>{e.time}</Text>
-            //     </View>
-            //   ))}
-            // </View>
-            <ScrollView style={{ marginBottom: 60, paddingVertical: 25 }}>
-              {data && data.map((e, i) => (
-                <>
-                  <View key={i} style={[styles.todoListView]}>
-                    <Text style={styles.todoText}>{e.text}</Text>
-
-                    {/* <TouchableOpacity onPress={() => edit(e, i)} style={{ width: '10%' }} >
-                          <Image source={editImage} style={styles.editAndDelete} />
-                      </TouchableOpacity>
-
-                      <TouchableOpacity onPress={() => del(e, i)} style={{ width: '10%' }} >
-                          <Image source={deleteImage} style={styles.editAndDelete} />
-                      </TouchableOpacity> */}
+            <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: '50%' }}>
+              <ActivityIndicator size='large' color="white" />
+            </View>
+            : (
+              <>
+                {data ?
+                  <View>
+                    <TouchableOpacity onPress={refresh} style={{ backgroundColor: 'crimson', borderColor: 'white', paddingVertical: 5, borderWidth: 2, borderRadius: 15, }}>
+                      <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 22, color: 'white' }}>Refresh</Text>
+                    </TouchableOpacity>
                   </View>
-                </>)
-              )}
-            </ScrollView>
+                  :
+                  ""
+                }
+                <ScrollView>
+                  <View style={{ alignItems: 'center', marginBottom: 60, paddingBottom: 25, paddingTop: 25 }}>
+                    {data && data.map((e, i) => (
+                      <>
+                        <View key={i} style={[styles.todoListView]}>
+                          <Text style={styles.todoText}>{e.text}</Text>
+                        </View>
+                      </>)
+                    )}
+                  </View>
+                </ScrollView>
+              </>
+            )
+            // </View>
           }
-          <TouchableOpacity onPress={getData} style={{ backgroundColor: 'crimson', marginTop: 15, borderColor: 'white', paddingVertical: 5, borderWidth: 2, borderRadius: 15, width: '50%' }}>
+          {/* <TouchableOpacity onPress={getData} style={{ backgroundColor: 'crimson', marginTop: 15, borderColor: 'white', paddingVertical: 5, borderWidth: 2, borderRadius: 15, width: '50%' }}>
             <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 22, color: 'white' }}>Show Todo Data</Text>
-          </TouchableOpacity>
-          {data ?
-            <TouchableOpacity onPress={refresh} style={{ backgroundColor: 'crimson', marginTop: 15, borderColor: 'white', paddingVertical: 5, borderWidth: 2, borderRadius: 15, width: '50%' }}>
-              <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 22, color: 'white' }}>Refresh</Text>
-            </TouchableOpacity>
-            : ""
-          }
-
-        </View >
+          </TouchableOpacity> */}
+        </View>
       </ImageBackground>
     </>
   )
@@ -101,6 +96,14 @@ const styles = StyleSheet.create({
   todoText: {
     width: '90%',
     color: 'black',
-    fontSize:16
+    fontSize: 16
   },
+  countOrNoCount: {
+    textAlign: 'center',
+    color: 'white',
+    fontWeight: 'bold',
+    marginVertical: 15,
+    fontSize: 25,
+    textDecoration: 'underline'
+  }
 })

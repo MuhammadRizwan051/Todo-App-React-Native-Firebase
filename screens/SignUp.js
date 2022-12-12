@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import styles from '../styling';
 import SMTextField from '../component/SMTextInput';
 import SMButton from '../component/SMButton';
@@ -12,8 +12,10 @@ import { Alert } from 'react-native';
 function SignUp({ navigation }) {
   const [model, setModel] = useState({});
   const [err, setErr] = useState()
+  const [isLoading, setIsLoading] = useState(false)
 
   let signupuser = () => {
+    setIsLoading(true)
     if (!model) {
       Alert.alert(
         "Alert Title",
@@ -43,17 +45,20 @@ function SignUp({ navigation }) {
       .then(res => {
         console.log(res)
         database()
-          .ref(`appUsers/${res.user.uid}`)
-          .set(model)
-          .then(() => {
+        .ref(`appUsers/${res.user.uid}`)
+        .set(model)
+        .then(() => {
+            setIsLoading(false)
             navigation.navigate('Login')
           })
           .catch(dberr => {
+            setIsLoading(false)
             console.log(dberr)
             setErr(dberr)
           })
       })
       .catch(err => {
+        setIsLoading(false)
         console.log(err)
       })
   }
@@ -72,7 +77,7 @@ function SignUp({ navigation }) {
         </View>
         <View style={[styles.p2, styles.w100, { paddingTop: 50 }]}>
           <TouchableOpacity style={{ backgroundColor: '#2B3A55', paddingVertical: 10, borderRadius: 15 }} onPress={signupuser}>
-            <Text style={{ textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 20 }}>SIGNUP</Text>
+            <Text style={{ textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 20 }}>{isLoading ? <ActivityIndicator size='large' color="white" /> : 'SIGNUP'}</Text>
           </TouchableOpacity>
         </View>
         <View style={[styles.w100, { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }]}>
