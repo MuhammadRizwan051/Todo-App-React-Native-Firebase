@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import SMButton from '../component/SMButton';
 import SMTextField from '../component/SMTextInput';
 import auth from '@react-native-firebase/auth';
@@ -9,14 +9,18 @@ import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 
 function Login({ navigation }) {
   const [model, setModel] = useState({});
+  const [isLoading, setIsLoading] = useState(false)
 
   let loginuser = () => {
+    setIsLoading(true)
     auth().signInWithEmailAndPassword(model.email, model.password)
       .then(res => {
+        setIsLoading(false)
         // console.log(res)
         navigation.navigate('Todo', res.user.uid)
       })
       .catch(err => {
+        setIsLoading(false)
         console.log(err)
       })
   }
@@ -30,11 +34,12 @@ function Login({ navigation }) {
           <SMTextField label="Email" labelColor='grey' placeholderTextColor='black' onChangeText={e => setModel({ ...model, email: e })} />
         </View>
         <View style={[styles.w100, { paddingTop: 25, paddingHorizontal: 20 }]}>
-          <SMTextField label="Password" labelColor='grey' placeholderTextColor='black' onChangeText={e => setModel({ ...model, password: e })} />
+          <SMTextField secureTextEntry={true} label="Password" labelColor='grey' placeholderTextColor='black' onChangeText={e => setModel({ ...model, password: e })} />
         </View>
+
         <View style={[styles.p2, styles.w100, { paddingTop: 50 }]}>
           <TouchableOpacity style={{ backgroundColor: '#2B3A55', paddingVertical: 10, borderRadius: 15 }} onPress={loginuser}>
-            <Text style={{ textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 20 }}>LOGIN</Text>
+            <Text style={{ textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 20 }}>{isLoading ? <ActivityIndicator size='large' color="white" /> : 'LOGIN'}</Text>
           </TouchableOpacity>
         </View>
         <View style={[styles.w100, { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }]}>
